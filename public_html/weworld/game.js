@@ -382,7 +382,7 @@ class Game {
     raycaster.setFromCamera(mouse, this.camera);
 
     const intersects = raycaster.intersectObjects(this.remoteColliders);
-    const chat = document.getElementById("chat");
+    const chat = document.getElementById("chat-container");
 
     if (intersects.length > 0) {
       const object = intersects[0].object;
