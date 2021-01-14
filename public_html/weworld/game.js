@@ -59,9 +59,6 @@ class Game {
         `${this.assetsPath}images/nz.jpg`,
         `${this.assetsPath}images/pz.jpg`,
       ],
-      oncomplete: function () {
-        game.init();
-      },
     };
 
     this.anims.forEach(function (anim) {
@@ -69,6 +66,8 @@ class Game {
     });
 
     options.assets.push(`${game.assetsPath}fbx/town.fbx`);
+
+    game.init();
 
     this.mode = this.modes.PRELOAD;
 
@@ -778,10 +777,10 @@ class PlayerLocal extends Player {
 class SpeechBubble {
   constructor(game, msg, size = 1) {
     this.config = {
-      font: "Calibri",
-      size: 24,
+      font: "Arial",
+      size: 18,
       padding: 10,
-      colour: "#222",
+      colour: "#ffffff",
       width: 256,
       height: 256,
     };
@@ -795,7 +794,7 @@ class SpeechBubble {
     const loader = new THREE.TextureLoader();
     loader.load(
       // resource URL
-      `${game.assetsPath}images/speech.png`,
+      `${game.assetsPath}images/speech-black-2.png`,
 
       // onLoad callback
       function (texture) {
@@ -893,7 +892,7 @@ class SpeechBubble {
     if (this.mesh !== undefined && this.player !== undefined) {
       this.mesh.position.set(
         this.player.object.position.x,
-        this.player.object.position.y + 380,
+        this.player.object.position.y + 280,
         this.player.object.position.z
       );
       this.mesh.lookAt(pos);

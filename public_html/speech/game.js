@@ -62,7 +62,7 @@ class Game{
 
 class SpeechBubble{
 	constructor(scene, msg){
-		this.config = { font:'Calibri', size:18, padding:10, colour:'#222', width:256, height:256 };
+		this.config = { font:'Arial', size:14, padding:10, colour:'#ffffff', width:256, height:256 };
 		
 		const planeGeometry = new THREE.PlaneGeometry(1,1);
 		const planeMaterial = new THREE.MeshBasicMaterial()
@@ -73,7 +73,7 @@ class SpeechBubble{
 		const loader = new THREE.TextureLoader();
 		loader.load(
 			// resource URL
-			'assets/speech.png',
+			'assets/speech-black.png',
 
 			// onLoad callback
 			function ( texture ) {
