@@ -155,19 +155,19 @@ class Game {
     this.renderer.shadowMap.enabled = true;
     this.container.appendChild(this.renderer.domElement);
 
-    if ("ontouchstart" in window) {
-      window.addEventListener(
-        "touchdown",
-        (event) => game.onMouseDown(event),
-        false
-      );
-    } else {
-      window.addEventListener(
-        "mousedown",
-        (event) => game.onMouseDown(event),
-        false
-      );
-    }
+    // if ("ontouchstart" in window) {
+    //   window.addEventListener(
+    //     "touchdown",
+    //     (event) => game.onMouseDown(event),
+    //     false
+    //   );
+    // } else {
+    //   window.addEventListener(
+    //     "mousedown",
+    //     (event) => game.onMouseDown(event),
+    //     false
+    //   );
+    // }
 
     window.addEventListener("resize", () => game.onWindowResize(), false);
   }
@@ -363,62 +363,62 @@ class Game {
     });
   }
 
-  onMouseDown(event) {
-    if (
-      this.remoteColliders === undefined ||
-      this.remoteColliders.length == 0 ||
-      this.speechBubble === undefined ||
-      this.speechBubble.mesh === undefined
-    )
-      return;
+  // onMouseDown(event) {
+  //   if (
+  //     this.remoteColliders === undefined ||
+  //     this.remoteColliders.length == 0 ||
+  //     this.speechBubble === undefined ||
+  //     this.speechBubble.mesh === undefined
+  //   )
+  //     return;
 
-    // calculate mouse position in normalized device coordinates
-    // (-1 to +1) for both components
-    const mouse = new THREE.Vector2();
-    mouse.x = (event.clientX / this.renderer.domElement.clientWidth) * 2 - 1;
-    mouse.y = -(event.clientY / this.renderer.domElement.clientHeight) * 2 + 1;
+  //   // calculate mouse position in normalized device coordinates
+  //   // (-1 to +1) for both components
+  //   const mouse = new THREE.Vector2();
+  //   mouse.x = (event.clientX / this.renderer.domElement.clientWidth) * 2 - 1;
+  //   mouse.y = -(event.clientY / this.renderer.domElement.clientHeight) * 2 + 1;
 
-    const raycaster = new THREE.Raycaster();
-    raycaster.setFromCamera(mouse, this.camera);
+  //   const raycaster = new THREE.Raycaster();
+  //   raycaster.setFromCamera(mouse, this.camera);
 
-    const intersects = raycaster.intersectObjects(this.remoteColliders);
-    const chat = document.getElementById("chat-container");
+  //   const intersects = raycaster.intersectObjects(this.remoteColliders);
+  //   const chat = document.getElementById("chat-container");
 
-    if (intersects.length > 0) {
-      const object = intersects[0].object;
-      const players = this.remotePlayers.filter(function (player) {
-        if (player.collider !== undefined && player.collider == object) {
-          return true;
-        }
-      });
-      if (players.length > 0) {
-        const player = players[0];
-        console.log(`onMouseDown: player ${player.id}`);
-        this.speechBubble.player = player;
-        this.speechBubble.update("");
-        this.scene.add(this.speechBubble.mesh);
-        this.chatSocketId = player.id;
-        chat.style.bottom = "0px";
-        this.activeCamera = this.cameras.chat;
-      }
-    } else {
-      //Is the chat panel visible?
-      if (
-        chat.style.bottom == "0px" &&
-        window.innerHeight - event.clientY > 40
-      ) {
-        console.log("onMouseDown: No player found");
-        if (this.speechBubble.mesh.parent !== null)
-          this.speechBubble.mesh.parent.remove(this.speechBubble.mesh);
-        delete this.speechBubble.player;
-        delete this.chatSocketId;
-        chat.style.bottom = "-50px";
-        this.activeCamera = this.cameras.back;
-      } else {
-        console.log("onMouseDown: typing");
-      }
-    }
-  }
+  //   if (intersects.length > 0) {
+  //     const object = intersects[0].object;
+  //     const players = this.remotePlayers.filter(function (player) {
+  //       if (player.collider !== undefined && player.collider == object) {
+  //         return true;
+  //       }
+  //     });
+  //     if (players.length > 0) {
+  //       const player = players[0];
+  //       console.log(`onMouseDown: player ${player.id}`);
+  //       this.speechBubble.player = player;
+  //       this.speechBubble.update("");
+  //       this.scene.add(this.speechBubble.mesh);
+  //       this.chatSocketId = player.id;
+  //       chat.style.bottom = "0px";
+  //       this.activeCamera = this.cameras.chat;
+  //     }
+  //   } else {
+  //     //Is the chat panel visible?
+  //     if (
+  //       // chat.style.bottom == "0px" &&
+  //       window.innerHeight - event.clientY > 40
+  //     ) {
+  //       console.log("onMouseDown: No player found");
+  //       if (this.speechBubble.mesh.parent !== null)
+  //         this.speechBubble.mesh.parent.remove(this.speechBubble.mesh);
+  //       delete this.speechBubble.player;
+  //       delete this.chatSocketId;
+  //       // chat.style.bottom = "-50px";
+  //       this.activeCamera = this.cameras.back;
+  //     } else {
+  //       console.log("onMouseDown: typing");
+  //     }
+  //   }
+  // }
 
   getRemotePlayerById(id) {
     if (this.remotePlayers === undefined || this.remotePlayers.length == 0)
@@ -644,18 +644,17 @@ class PlayerLocal extends Player {
       }
     });
 
-    socket.on("chat message", function (data) {
-      document.getElementById("chat").style.bottom = "0px";
-      const player = game.getRemotePlayerById(data.id);
-      game.speechBubble.player = player;
-      game.chatSocketId = player.id;
-      game.activeCamera = game.cameras.chat;
-      game.speechBubble.update(data.message);
+    socket.on("add local chat bubble", function(data){
+      addLocalChatBubble(data.id, data.message);
+    });
+
+    socket.on("add remote chat bubble", function(data){
+      addRemoteChatBubble(data.id, data.message);
     });
 
     $("#msg-form").submit(function (e) {
       socket.emit("chat message", {
-        id: game.chatSocketId,
+        id: player.id,
         message: $("#m").val(),
       });
       $("#m").val("");

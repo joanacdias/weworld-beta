@@ -14,10 +14,11 @@
 			<button id="message_ok">OK</button>
 		</div>
 		<div class="chat-container" id="chat-container">
-			<button class="toggle-chatbar-btn" onclick="test()">
+			<button id="toggle-chatbar-btn" class="toggle-chatbar-btn" onclick="toggleChatBar()">
 				<img src="assets/icons/chevron-white.svg" alt="chevron icon" />
 			</button>
-			<div id="chat">
+			<div id="chat" class="chat"></div>
+			<div id="chat-form">
 				<form id="msg-form" action="">
 					  <input id="m" autocomplete="off" /><button>Send</button>
 				</form>

@@ -42,8 +42,8 @@ io.sockets.on('connection', function(socket){
 	});
 	
 	socket.on('chat message', function(data){
-		console.log(`chat message:${data.id} ${data.message}`);
-		io.to(data.id).emit('chat message', { id: socket.id, message: data.message });
+		io.to(socket.id).emit('add local chat bubble', { id: socket.id, message: data.message});
+		socket.broadcast.emit('add remote chat bubble', { id: socket.id, message: data.message});
 	})
 });
 
