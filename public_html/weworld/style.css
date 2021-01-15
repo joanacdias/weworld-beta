@@ -6,6 +6,14 @@ body {
     overflow: hidden;
 }
 
+.hidden {
+    opacity: 0;
+}
+
+.visible {
+    opacity: 1;
+}
+
 .chat-container {
     padding: 8px;
     width: 320px;

@@ -481,8 +481,10 @@ class Game {
       this.sun.position.y += 10;
     }
 
-    if (this.speechBubble !== undefined)
-      this.speechBubble.show(this.camera.position);
+    const chatContainer = document.getElementById("chat-container")
+
+    chatContainer.classList.remove("hidden");
+    chatContainer.classList.add("visible");
 
     this.renderer.render(this.scene, this.camera);
   }

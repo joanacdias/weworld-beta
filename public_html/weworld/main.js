@@ -11,10 +11,6 @@ function toggleChatBar() {
     }
 }
 
-function testChat() {
-    console.log('hello');
-}
-
 function addLocalChatBubble(id, msg) {
     const chat = document.getElementById("chat");
     const playerSpeech = document.createElement("div");
