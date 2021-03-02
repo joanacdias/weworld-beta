@@ -5,7 +5,6 @@ const io = require('socket.io')(http);
 
 app.use(express.static('../../public_html/weworld/'));
 app.use(express.static('../../public_html/libs'));
-// app.use(express.static('../../public_html/blockland/v3'));
 app.get('/',function(req, res) {
     res.sendFile(__dirname + '../../public_html/weworldindex.html');
 });

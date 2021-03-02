@@ -443,8 +443,9 @@ class Game {
 
     this.updateRemotePlayers(dt);
 
-    if (this.player.mixer != undefined && this.mode == this.modes.ACTIVE)
+    if (this.player.mixer != undefined && this.mode == this.modes.ACTIVE){
       this.player.mixer.update(dt);
+    }
 
     if (this.player.action == undefined) this.player.action = this.player.model + "_idle"
 
@@ -494,11 +495,6 @@ class Player {
   constructor(game, options) {
     this.local = true;
     let model;
-    
-    // colour;
-
-    // const colours = ["Black", "Brown", "White"];
-    // colour = colours[Math.floor(Math.random() * colours.length)];
 
     if (options === undefined) {
       const people = [
@@ -579,6 +575,7 @@ class Player {
       : THREE.AnimationClip.parse(
           THREE.AnimationClip.toJSON(this.animations[name])
         );
+      
     const action = this.mixer.clipAction(clip);
     action.time = 0;
     this.mixer.stopAllAction();
